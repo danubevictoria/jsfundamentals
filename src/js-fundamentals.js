@@ -5,6 +5,11 @@
  * ex: isNegativeOrOdd(2); -> false
  */
 function isNegativeOrOdd(value) {
+  if (value < 0 || value % 2 !== 0) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 /**
@@ -14,7 +19,14 @@ function isNegativeOrOdd(value) {
  * repeat('abc',0); -> ''
  */
 function repeat(string, count) {
+  let result = '';
 
+  while (count > 0) {
+    result += string;
+    count--;
+  }
+
+  return result;
 }
 
 /**
@@ -24,7 +36,7 @@ function repeat(string, count) {
  * reverseString('will'); -> 'lliw'
  */
 function reverseString(string) {
-
+  return string.split('').reverse().join('');
 }
 
 /**
@@ -32,7 +44,14 @@ function reverseString(string) {
  * ex: reverseObject({a:1,b:"c","d":4}); -> {1:a,c:"b",4:"d"}
  */
 function reverseObject(object) {
+  let result = {};
 
+  for (let key in object) {
+    let value = object[key];
+    result[value] = key;
+  }
+
+  return result;
 }
 
 /**
@@ -41,6 +60,7 @@ function reverseObject(object) {
  * isNumber('hi'); → false
  */
 function isNumber(value) {
+  return typeof(value) === 'number';
 }
 
 /**
@@ -49,6 +69,7 @@ function isNumber(value) {
  * isArray([1,2,3]); → true
  */
 function isArray(value) {
+  return Array.isArray(value);
 }
 
 /**
@@ -57,7 +78,7 @@ function isArray(value) {
  * isObject([1,2,3]); → true
  */
 function isObject(value) {
-
+  return typeof(value) === 'object';
 }
 
 /**
@@ -66,7 +87,7 @@ function isObject(value) {
  * isNull(5); -> false
  */
 function isNull(value) {
-
+  return value === null;
 }
 
 /**
@@ -89,7 +110,11 @@ function clone(value) {
  * size({a: 1, b: 2}); → 2
  */
 function size(collection) {
-
+  if (isArray(collection)) {
+    return collection.length;
+  } else if (isObject(collection)) {
+    return Object.keys(collection).length;
+  }
 }
 
 /**
@@ -100,7 +125,13 @@ function size(collection) {
  * indexOf([11,22,33], 5); → -1
  */
 function indexOf(array, value) {
-
+  for (let i = 0; i < array.length; i++) {
+    let current = array[i];
+    if (current === value) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 /**
@@ -111,6 +142,9 @@ function indexOf(array, value) {
  * drop([1, 2, 3], 0); → [1, 2, 3]
  */
 function drop(array, n) {
+  if (n === undefined) {
+    n = 1;
+  }
 
 }
 
@@ -141,8 +175,14 @@ function take(array, n) {
  * difference([0,1,2,3,4,5],[3,5]); -> [0,1,2,4]
  */
 function difference(array1, array2) {
-
-
+  let diff = [];
+  for (let i = 0; i < array1.length; i++) {
+    let value = array1[i];
+    if (array2.indexOf(value) === -1) {
+      diff.push(value);
+    }
+  }
+  return diff;
 }
 
 /**
@@ -155,7 +195,9 @@ function difference(array1, array2) {
  * For each element in the array, the callback we passed is called. The callback can be customized, but in the above example, the callback prints out the element, index, and entire array.
  */
 function forEach(array, callback) {
-
+  for (let i = 0; i < array.length; i++) {
+    callback(array[i], i, array);
+  }
 }
 
 /**
@@ -167,7 +209,9 @@ function forEach(array, callback) {
  * forEach(['a','b','c'], callback); → prints c,2,[1,2,3] b,1,[1,2,3] a,0,[1,2,3]
  */
 function forEachRight(array, callback) {
-
+  for (let i = array.length - 1; i >= 0; i--) {
+    callback(array[i], i, array);
+  }
 }
 
 /**
@@ -179,7 +223,9 @@ function forEachRight(array, callback) {
  * BONUS: use the forEach method you use to create map
  */
 function map(array, callback) {
-
+  let result = [];
+  result.push(forEach(array, callback));
+  return result;
 }
 
 /**
@@ -193,6 +239,11 @@ function map(array, callback) {
  */
 function filter(collection, callback) {
 
+  // for (let i = 0; i < collection.length) {
+  //   if (callback(collection[i])) {
+  //
+  //   }
+  // }
 }
 
 /**
@@ -214,6 +265,18 @@ function reject(collection, callback) {
  * uniq([1,2,1]); → [1,2]
  */
 function uniq(array) {
+  let seen = new Set();
+  let unique = [];
+
+  for (let i = 0; i < array.length; i++) {
+    let value = array[i];
+    if (!seen.has(value)) {
+      unique.push(value);
+      seen.add(value);
+    }
+  }
+
+  return unique;
 }
 
 /**
@@ -221,7 +284,6 @@ function uniq(array) {
  * pluck([{user: 'Bob', age: 20},{user: 'Sam', age: 25}], 'user'); → ['Bob','Sam']
  */
 function pluck(array, key) {
-
 }
 
 /**
@@ -255,7 +317,19 @@ function reduce(array, callback, start) {
  * flatten([1, [2, 3, [4]]]); → [1, 2, 3, [4]]
  */
 function flatten(array) {
+  let result = [];
 
+  for (let i = 0; i < array.length; i++) {
+    let value = array[i];
+
+    if (typeof(value) === 'number') {
+      result.push(value);
+    } else {
+      result.push(flatten(value));
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -263,7 +337,19 @@ function flatten(array) {
  * flattenDeep([1, [2, 3, [4]]]); → [1, 2, 3, 4]
  */
 function flattenDeep(array) {
+  let result = [];
 
+  for (let i = 0; i < array.length; i++) {
+    let value = array[i];
+
+    if (typeof(value) === 'number') {
+      result.push(value);
+    } else {
+      result.concat(flatten(value));
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -333,7 +419,7 @@ function memoize(func) {
  * Any additional arguments are provided to func when it is invoked.
  */
 function delay(func, wait) {
-
+  setTimeout(func, wait);
 }
 
 /**
@@ -443,4 +529,3 @@ function before(count, func) {
 function arrayFactory(length, processor) {
 
 }
-
