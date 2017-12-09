@@ -142,10 +142,17 @@ function indexOf(array, value) {
  * drop([1, 2, 3], 0); → [1, 2, 3]
  */
 function drop(array, n) {
+  let result = [];
+
   if (n === undefined) {
     n = 1;
   }
 
+  for (let i = n; i < array.length; i++) {
+    result.push(array[i]);
+  }
+
+  return result;
 }
 
 /**
@@ -156,8 +163,18 @@ function drop(array, n) {
  * dropRight([1, 2, 3], 0); → [1, 2, 3]
  */
 function dropRight(array, n) {
+  let result = [];
 
- }
+  if (n === undefined) {
+    n = 1;
+  }
+
+  for (let i = 0; i < array.length - n; i++) {
+    result.push(array[i]);
+  }
+
+  return result;
+}
 
 /**
  * Creates a slice of array containing n elements taken from the beginning. n defaults to 1
@@ -167,7 +184,16 @@ function dropRight(array, n) {
  * take([1, 2, 3], 0); → []
  */
 function take(array, n) {
+  let result = [];
 
+  if (n === undefined) {
+    n = 1;
+  }
+  for (let i = 0; i < Math.min(n, array.length); i++) {
+    result.push(array[i]);
+  }
+
+  return result;
 }
 
 /**
@@ -224,7 +250,12 @@ function forEachRight(array, callback) {
  */
 function map(array, callback) {
   let result = [];
-  result.push(forEach(array, callback));
+
+  for (let i = 0; i < array.length; i++) {
+    let processed = callback(array[i], i, array);
+    result.push(processed);
+  }
+  
   return result;
 }
 
@@ -239,11 +270,30 @@ function map(array, callback) {
  */
 function filter(collection, callback) {
 
-  // for (let i = 0; i < collection.length) {
-  //   if (callback(collection[i])) {
-  //
-  //   }
-  // }
+  if (isArray(collection)) {
+    let result = [];
+
+    for (let i = 0; i < size(collection); i++) {
+      let value = collection[i];
+
+      if (callback(value, i, collection)) {
+        result.push(value);
+      }
+    }
+
+    return result;
+  } else if (isObject(collection)) {
+    let result = {};
+
+    for (let key in collection) {
+      let value = collection[key];
+      if (callback(value, key, collection)) {
+        result[key] = value;
+      }
+    }
+
+    return result;
+  }
 }
 
 /**
@@ -292,7 +342,7 @@ function pluck(array, key) {
  * trim('   hello world '); -> 'hello world'
  */
 function trim(string) {
-
+  return string.trim();
 }
 
 /**
@@ -368,7 +418,7 @@ function extend() {
  * isString(5); → false
  */
 function isString(value) {
-
+  return typeof(value) === 'string';
 }
 
 /**
@@ -395,7 +445,14 @@ function cloneDeep(value) {
  * applyAndEmpty(2, puzzlers); → 3
  */
 function applyAndEmpty(input, queue) {
+  let nextInput = input;
 
+  for (let i = 0; i < queue.length; i++) {
+    let func = queue[i];
+    nextInput = func(nextInput);
+  }
+
+  return nextInput;
 }
 
 /**
@@ -461,7 +518,25 @@ function sortBy(array, iterator) {
  * range(0,-10,-1); -> [0,-1,-2,-3,-4,-5,-6,-7,-8,-9]
  */
 function range(start, stop, step) {
+  let result = [];
 
+  if (arguments.length === 1) {
+    stop = arguments[0];
+    start = 0;
+    step = 1;
+  } else if (arguments.length === 2) {
+    start = arguments[0];
+    stop = arguments[1];
+    step = 1;
+  }
+
+  while ((start < stop && step > 0) || (start > stop && step < 0)) {
+      result.push(start);
+      start += step;
+  }
+
+  // console.log(result);
+  return result;
 }
 
 /**
@@ -480,7 +555,15 @@ function partition(array, predicate) {
  * intersection([1, 2, 3], [101, 2, 1, 10], [2, 1]); -> [1,2]
  */
 function intersection() {
+  let shared = [];
 
+  for (let i = 0; i < arguments.length; i++) {
+    for (let j = 0; j < arguments[0].length; j++) {
+      let value = arguments[i][j];
+
+
+    }
+  }
 }
 
 /**
@@ -527,5 +610,11 @@ function before(count, func) {
  * Remember the zero-based index for arrays. 3 Was passed as the last argument for an array of length 4.
  */
 function arrayFactory(length, processor) {
+  let arr = new Array(length);
 
+  for (let i = 0; i < length; i++) {
+    arr[i] = processor(i);
+  }
+
+  return arr;
 }
