@@ -5,7 +5,6 @@
  * ex: isNegativeOrOdd(2); -> false
  */
 function isNegativeOrOdd(value) {
-
 }
 
 /**
@@ -42,7 +41,6 @@ function reverseObject(object) {
  * isNumber('hi'); → false
  */
 function isNumber(value) {
-
 }
 
 /**
@@ -51,7 +49,6 @@ function isNumber(value) {
  * isArray([1,2,3]); → true
  */
 function isArray(value) {
-
 }
 
 /**
@@ -126,7 +123,7 @@ function drop(array, n) {
  */
 function dropRight(array, n) {
 
-}
+ }
 
 /**
  * Creates a slice of array containing n elements taken from the beginning. n defaults to 1
@@ -144,6 +141,7 @@ function take(array, n) {
  * difference([0,1,2,3,4,5],[3,5]); -> [0,1,2,4]
  */
 function difference(array1, array2) {
+
 
 }
 
@@ -216,7 +214,6 @@ function reject(collection, callback) {
  * uniq([1,2,1]); → [1,2]
  */
 function uniq(array) {
-
 }
 
 /**
@@ -446,3 +443,4 @@ function before(count, func) {
 function arrayFactory(length, processor) {
 
 }
+
